@@ -9,31 +9,38 @@ import javax.swing.JOptionPane;
 
 public class Enigme {
 
-    private Emotion emotion;
     private String question;
-    private String[] reponsesValides;
+    private String solution;
+    private Emotion emotionADebloquer;
 
-    public Enigme(Emotion emotion, String question, String... reponsesValides) {
-        this.emotion = emotion;
+    /* =========================
+       CONSTRUCTEUR UTILISÉ PAR MONDE
+       (celui que ton code appelle)
+       ========================= */
+    public Enigme(String question, String solution, Emotion emotionADebloquer) {
         this.question = question;
-        this.reponsesValides = reponsesValides;
+        this.solution = solution;
+        this.emotionADebloquer = emotionADebloquer;
     }
 
+    /* =========================
+       LOGIQUE DE L'ÉNIGME
+       ========================= */
     public boolean poser(RobotEmotion robot) {
         String saisie = JOptionPane.showInputDialog(question);
 
         if (saisie == null) {
-            JOptionPane.showMessageDialog(null, "Vous devez répondre pour avancer !");
+            JOptionPane.showMessageDialog(null,
+                    "Vous devez répondre pour continuer !");
             return false;
         }
 
-        for (String rep : reponsesValides) {
-            if (rep.equalsIgnoreCase(saisie.trim())) {
-                robot.debloquerEmotion(emotion);
-                JOptionPane.showMessageDialog(null,
-                        "Bonne réponse ! Nouvelle émotion : " + emotion.getNom());
-                return true;
-            }
+        if (verifierReponse(saisie)) {
+            robot.debloquerEmotion(emotionADebloquer);
+            JOptionPane.showMessageDialog(null,
+                    "Bonne réponse !\nNouvelle émotion : "
+                            + emotionADebloquer.getNom());
+            return true;
         }
 
         JOptionPane.showMessageDialog(null,
@@ -41,31 +48,37 @@ public class Enigme {
         return false;
     }
 
-    public Emotion getEmotion() {
-        return emotion;
+    /* =========================
+       VÉRIFICATION STRICTE
+       (accents + casse)
+       ========================= */
+    private boolean verifierReponse(String saisie) {
+
+        String rep = saisie.trim();
+
+        if (emotionADebloquer instanceof Colere) {
+            return rep.equalsIgnoreCase("colere")
+                || rep.equalsIgnoreCase("colère");
+        }
+
+        if (emotionADebloquer instanceof Tristesse) {
+            return rep.equalsIgnoreCase("tristesse");
+        }
+
+        if (emotionADebloquer instanceof Joie) {
+            return rep.equalsIgnoreCase("joie");
+        }
+
+        if (emotionADebloquer instanceof Nostalgie) {
+            return rep.equalsIgnoreCase("nostalgie");
+        }
+
+        return rep.equalsIgnoreCase(solution);
     }
 
-    /* =========================
-       ENIGMES DU JEU
-       ========================= */
-
-    public static Enigme ENIGME_COLERE = new Enigme(
-            new Colere(),
-            "Quelle émotion bouillonne face à l'injustice ?",
-            "colere", "colère", "COLERE", "COLÈRE"
-    );
-
-    public static Enigme ENIGME_TRISTESSE = new Enigme(
-            new Tristesse(),
-            "Quelle émotion surgit lors d'une perte ?",
-            "tristesse", "TRISTESSE"
-    );
-
-    public static Enigme ENIGME_JOIE = new Enigme(
-            new Joie(),
-            "Quelle émotion illumine les moments heureux ?",
-            "joie", "JOIE"
-    );
+    public Emotion getEmotion() {
+        return emotionADebloquer;
+    }
 }
 
     
