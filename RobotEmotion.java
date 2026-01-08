@@ -86,6 +86,20 @@ public class RobotEmotion extends Personnage {
             this.changerEmotion(nouvelle);
             return true; 
         }
+        if ("Joie".equalsIgnoreCase(reponse)) {
+            // Si c'est juste, on débloque et on change l'émotion
+            Emotion nouvelle = new Joie();
+            this.ajouterEmotion(nouvelle);
+            this.changerEmotion(nouvelle);
+            return true; 
+        }
+        if ("Tristesse".equalsIgnoreCase(reponse)) {
+            // Si c'est juste, on débloque et on change l'émotion
+            Emotion nouvelle = new Tristesse();
+            this.ajouterEmotion(nouvelle);
+            this.changerEmotion(nouvelle);
+            return true; 
+        }
         
         // Si c'est faux, on retourne false pour que JeuVue affiche un message d'erreur
         return false;
