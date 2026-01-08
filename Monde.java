@@ -30,8 +30,8 @@ public class Monde {
         // --- 2. INSTALLATION DES PIÈCES SUR LA CARTE ---
         this.installerPiece(tourControle, 0, 0, 2, 2);      // Départ
         this.installerPiece(chambreColere, 2, 2, 1, 1);     // Zone Colère
-        this.installerPiece(chambreTristesse, 5, 1, 1, 1);  // Zone Tristesse
-        this.installerPiece(chambrePeur, 1, 5, 1, 1);       // Zone Peur
+        this.installerPiece(chambreTristesse, 5, 7, 1, 1);  // Zone Tristesse
+        this.installerPiece(chambrePeur, 1, 7, 1, 1);       // Zone Peur
         this.installerPiece(salleSouvenirs, 8, 8, 2, 2);    // Arrivée finale
 
         // --- 3. PLACEMENT DES 8 ÉNIGMES ---
