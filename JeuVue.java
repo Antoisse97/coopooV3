@@ -119,7 +119,11 @@ public class JeuVue extends JFrame {
                     if (rep != null && robot.verifierReponse(rep)) {
                         JOptionPane.showMessageDialog(this, "La Colère vous envahit !");
                     }
+                    
+                    
                 }
+                
+                
 
                 if (cible.getPiece() != null && !cible.getPiece().getSouvenirs().isEmpty()) {
                     examinerSouvenirs(cible.getPiece());
