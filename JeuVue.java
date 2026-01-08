@@ -88,23 +88,23 @@ public class JeuVue extends JFrame {
     }
 
     private void tenterDeplacement(int dx, int dy) {
-        int xActuel = -1, yActuel = -1;
+        int ligneActuelle = -1, colonneActuelle = -1;
         for (int i = 0; i < taille; i++) {
             for (int j = 0; j < taille; j++) {
                 if (monde.getCarte().getCellule(i, j) == robot.getPosition()) {
-                    xActuel = i; yActuel = j;
-                    break;
+                    ligneActuelle = i;
+                    colonneActuelle = j;
                 }
             }
         }
 
-        int nx = xActuel + dx;
-        int ny = yActuel + dy;
+        int nouvelleLigne = ligneActuelle + dy;
+        int nouvelleColonne = colonneActuelle + dx;
 
-        if (nx >= 0 && nx < taille && ny >= 0 && ny < taille) {
-            Cellule cible = monde.getCarte().getCellule(nx, ny);
+        if (dx >= 0 && dx < taille && dy >= 0 && dy < taille) {
+            Cellule cible = monde.getCarte().getCellule(dx, dy);
 
-            if (monde.getCarte().estAccessible(nx, ny)) {
+            if (monde.getCarte().estAccessible(dx, dy)) {
                 
                 if (!cible.getMonstres().isEmpty()) {
                     Monstre m = cible.getMonstres().get(0);
@@ -121,7 +121,7 @@ public class JeuVue extends JFrame {
                 robot.setPosition(cible);
 
                 // Énigme Colère en (2,2)
-                if (nx == 2 && ny == 2 && !(robot.getEmotion() instanceof Colere)) {
+                if (dx == 2 && dy == 2 && !(robot.getEmotion() instanceof Colere)) {
                     String rep = JOptionPane.showInputDialog(this, "Énigme : Quelle émotion bouillonne face à l'injustice ?");
                     if (rep != null && robot.verifierReponse(rep)) {
                         JOptionPane.showMessageDialog(this, "La Colère vous envahit !");
