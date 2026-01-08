@@ -49,5 +49,15 @@ public class Cellule {
     public void setEnigme(Enigme e) { this.enigme = e; }
     public Enigme getEnigme() { return enigme; }
     public boolean aEnigme() { return enigme != null; }
+    
+    private boolean decouverte = false;
+
+    public boolean estDecouverte() {
+        return decouverte;
+    }
+
+    public void decouvrir() {
+        this.decouverte = true;
+    }
 }
 

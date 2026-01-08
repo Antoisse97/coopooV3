@@ -1,3 +1,6 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 
 /**
  * Décrivez votre classe JeuVue ici.
@@ -5,9 +8,7 @@
  * @author (votre nom)
  * @version (un numéro de version ou une date)
  */
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
+
 
 public class JeuVue extends JFrame {
     private Monde monde;
@@ -88,54 +89,73 @@ public class JeuVue extends JFrame {
     }
 
     private void tenterDeplacement(int dx, int dy) {
-        int ligneActuelle = -1, colonneActuelle = -1;
-        for (int i = 0; i < taille; i++) {
-            for (int j = 0; j < taille; j++) {
-                if (monde.getCarte().getCellule(i, j) == robot.getPosition()) {
-                    ligneActuelle = i;
-                    colonneActuelle = j;
-                }
-            }
-        }
 
-        int nouvelleLigne = ligneActuelle + dy;
-        int nouvelleColonne = colonneActuelle + dx;
+    int ligneActuelle = -1;
+    int colonneActuelle = -1;
 
-        if (dx >= 0 && dx < taille && dy >= 0 && dy < taille) {
-            Cellule cible = monde.getCarte().getCellule(dx, dy);
-
-            if (monde.getCarte().estAccessible(dx, dy)) {
-                
-                if (!cible.getMonstres().isEmpty()) {
-                    Monstre m = cible.getMonstres().get(0);
-                    int choix = JOptionPane.showConfirmDialog(this, "Un " + m.getNom() + " bloque le passage ! Combattre ?");
-                    if (choix == JOptionPane.YES_OPTION) {
-                        m.attaquer(robot);
-                        if (!robot.estVivant()) {
-                            JOptionPane.showMessageDialog(this, "Le robot a succombé...");
-                            System.exit(0);
-                        }
-                    } else { return; }
-                }
-
-                robot.setPosition(cible);
-
-                // Énigme Colère en (2,2)
-                if (dx == 2 && dy == 2 && !(robot.getEmotion() instanceof Colere)) {
-                    String rep = JOptionPane.showInputDialog(this, "Énigme : Quelle émotion bouillonne face à l'injustice ?");
-                    if (rep != null && robot.verifierReponse(rep)) {
-                        JOptionPane.showMessageDialog(this, "La Colère vous envahit !");
-                    }
-                }
-
-                if (cible.getPiece() != null && !cible.getPiece().getSouvenirs().isEmpty()) {
-                    examinerSouvenirs(cible.getPiece());
-                }
-
-                mettreAJour();
+    for (int i = 0; i < taille; i++) {
+        for (int j = 0; j < taille; j++) {
+            if (monde.getCarte().getCellule(i, j) == robot.getPosition()) {
+                ligneActuelle = i;
+                colonneActuelle = j;
             }
         }
     }
+
+    int nouvelleLigne = ligneActuelle + dy;
+    int nouvelleColonne = colonneActuelle + dx;
+
+    if (nouvelleLigne < 0 || nouvelleLigne >= taille ||
+        nouvelleColonne < 0 || nouvelleColonne >= taille) return;
+
+    Cellule cible = monde.getCarte().getCellule(nouvelleLigne, nouvelleColonne);
+    cible.decouvrir();
+
+    /* ===== MUR ===== */
+    if (cible.getType() == CellType.MUR) {
+
+        Enigme enigme = Enigme.ENIGME_COLERE; // exemple
+
+        if (!robot.possedeEmotion(enigme.getEmotion().getClass())) {
+            boolean succes = enigme.poser(robot);
+            if (!succes) {
+                mettreAJour();
+                return;
+            }
+        }
+    }
+
+    /* ===== PORTE ===== */
+    if (cible.getType() == CellType.PORTE) {
+
+        Enigme enigme = Enigme.ENIGME_JOIE; // ou TRISTESSE selon ta carte
+
+        if (!robot.possedeEmotion(enigme.getEmotion().getClass())) {
+            boolean succes = enigme.poser(robot);
+            if (!succes) {
+                mettreAJour();
+                return;
+            }
+        }
+    }
+
+    /* ===== MONSTRE ===== */
+    if (!cible.getMonstres().isEmpty()) {
+        Monstre m = cible.getMonstres().get(0);
+        m.attaquer(robot);
+
+        if (!robot.estVivant()) {
+            JOptionPane.showMessageDialog(this, "Le robot a succombé...");
+            System.exit(0);
+        }
+
+        robot.debloquerEmotion(new Nostalgie());
+    }
+
+    robot.setPosition(cible);
+    mettreAJour();
+    }
+
     
     private void initialiserInterface(JPanel panel) {
         for (int i = 0; i < taille; i++) {
@@ -168,33 +188,51 @@ public class JeuVue extends JFrame {
         } else {
             labelLieu.setText(" Lieu : Cerveau de Fousse");
         }
-
+    
         // Mise à jour de la grille
         for (int i = 0; i < taille; i++) {
             for (int j = 0; j < taille; j++) {
+    
                 Cellule cell = monde.getCarte().getCellule(i, j);
                 JButton btn = boutons[i][j];
+    
+                // Case vide par défaut
                 btn.setText("");
                 btn.setBackground(Color.WHITE);
-
+    
+                // Si la case n'a jamais été découverte, on n'affiche rien
+                if (!cell.estDecouverte()) {
+                    continue;
+                }
+    
+                // Mur découvert
                 if (cell.getType() == CellType.MUR) {
-                    btn.setBackground(Color.DARK_GRAY);
-                } else if (cell.getType() == CellType.PORTE) {
+                    btn.setBackground(Color.BLACK);
+                }
+    
+                // Porte découverte
+                if (cell.getType() == CellType.PORTE) {
                     btn.setText("🚪");
                     btn.setBackground(new Color(200, 150, 100));
                 }
-
-                if (cellRobot == cell) {
-                    btn.setText("🤖");
-                    if (robot.getEmotion() instanceof Anxiete) btn.setBackground(Color.ORANGE);
-                    else if (robot.getEmotion() instanceof Colere) btn.setBackground(Color.RED);
-                    else if (robot.getEmotion() instanceof Nostalgie) btn.setBackground(new Color(139, 69, 19));
-                    else if (robot.getEmotion() instanceof Joie) btn.setBackground(Color.YELLOW);
-                    else if (robot.getEmotion() instanceof Tristesse) btn.setBackground(Color.BLUE);
-                }
-                
+    
+                // Monstre découvert
                 if (!cell.getMonstres().isEmpty()) {
                     btn.setText("👾");
+                }
+    
+                // Robot (toujours visible)
+                if (cell == cellRobot) {
+                    btn.setText("🤖");
+    
+                    if (robot.getEmotion() instanceof Colere)
+                        btn.setBackground(Color.RED);
+                    else if (robot.getEmotion() instanceof Tristesse)
+                        btn.setBackground(Color.BLUE);
+                    else if (robot.getEmotion() instanceof Joie)
+                        btn.setBackground(Color.YELLOW);
+                    else if (robot.getEmotion() instanceof Nostalgie)
+                        btn.setBackground(new Color(139, 69, 19));
                 }
             }
         }
