@@ -123,6 +123,22 @@ public class JeuVue extends JFrame {
                     
                 }
 
+
+                if (nx == 7 && ny == 1 && !(robot.getEmotion() instanceof Joie)) {
+                    String rep = JOptionPane.showInputDialog(this, "Énigme : Quelle émotion te donne le sourire ?");
+                    if (rep != null && robot.verifierReponse(rep)) {
+                        JOptionPane.showMessageDialog(this, "La Joie vous envahit !");
+                    }
+                }
+                if (nx == 7 && ny == 5 && !(robot.getEmotion() instanceof Tristesse)) {
+                    String rep = JOptionPane.showInputDialog(this, "Énigme : Quelle émotion te fait pleurer ?");
+                    if (rep != null && robot.verifierReponse(rep)) {
+                        JOptionPane.showMessageDialog(this, "La Tristesse vous envahit !");
+                    }
+                }
+                
+
+
                 if (nx == 7 && ny == 1 && !(robot.getEmotion() instanceof Joie)) {
                     String rep = JOptionPane.showInputDialog(this, "Énigme : Quelle émotion te donne le sourire ?");
                     if (rep != null && robot.verifierReponse(rep)) {
