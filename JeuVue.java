@@ -123,7 +123,12 @@ public class JeuVue extends JFrame {
                 }
 
 
+        }
+        else{
+            return;
+        }
         
+        }
         // Déplacement effectif
         robot.setPosition(cible);
 
@@ -156,6 +161,7 @@ public class JeuVue extends JFrame {
         // Rafraichissement de l'affichage
         mettreAJour();
     }
+
     
     private void initialiserInterface(JPanel panel) {
         for (int i = 0; i < taille; i++) {
