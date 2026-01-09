@@ -19,5 +19,6 @@ public class Monstre extends Personnage {
         System.out.println(getNom() + " attaque " + cible.getNom() + " !");
         cible.perdrePV(this.force); 
     }
+    
 }
 

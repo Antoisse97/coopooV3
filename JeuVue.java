@@ -175,6 +175,26 @@ public class JeuVue extends JFrame {
             }
         }
         
+        // --- GESTION DES MONSTRES (Duel Final) ---    
+        if (!cible.getMonstres().isEmpty()) {
+            Monstre m = cible.getMonstres().get(0);
+            int choix = JOptionPane.showConfirmDialog(this, "Le " + m.getNom() + " bloque le passage ! Voulez-vous engager le duel ?");
+            
+            if (choix == JOptionPane.YES_OPTION) {
+                // Lancement du combat interne à JeuVue
+                boolean victoire = executerDuelFinal(m);
+                
+                if (victoire) {
+                    JOptionPane.showMessageDialog(this, "Le monstre s'évapore dans les tréfonds de l'inconscient. Le passage est libre !");
+                    cible.getMonstres().clear(); // Supprime le monstre de la carte
+                } else {
+                    return; // Échec du combat, le robot ne bouge pas
+                }
+            } else {
+                return; // Refus du combat, on ne bouge pas
+            }
+        }
+        
         // Souvenir
         if (cible.getPiece() != null && !cible.getPiece().getSouvenirs().isEmpty()) {
             examinerSouvenirs(cible.getPiece());
@@ -192,6 +212,34 @@ public class JeuVue extends JFrame {
                 panel.add(boutons[i][j]);
             }
         }
+    }
+    
+    private boolean executerDuelFinal(Monstre m) {
+        int score = 0;
+        
+        // Définition des énigmes du monstre
+        String[][] enigmes = {
+            {"Je ne suis jamais là, mais je suis toujours à venir. Qui suis-je ?", "Le futur"},
+            {"Plus j'en ai, moins tu en vois. Qui suis-je ?", "L'obscurité"},
+            {"Si tu me nommes, je disparais. Qui suis-je ?", "Le silence"}
+        };
+    
+        JOptionPane.showMessageDialog(this, "COMBAT FINAL : Répondez correctement à 2 questions sur 3 !");
+    
+        for (int i = 0; i < enigmes.length; i++) {
+            String reponse = JOptionPane.showInputDialog(this, "Question " + (i + 1) + "/3 :\n" + enigmes[i][0]);
+            
+            // Vérification de la réponse (ignore la casse et les espaces)
+            if (reponse != null && reponse.trim().equalsIgnoreCase(enigmes[i][1])) {
+                score++;
+                JOptionPane.showMessageDialog(this, "Correct ! (Score : " + score + ")");
+            } else {
+                String msgFaux = (reponse == null) ? "Abandon..." : "Faux ! La réponse était : " + enigmes[i][1];
+                JOptionPane.showMessageDialog(this, msgFaux);
+            }
+        }
+    
+        return (score >= 2); // Renvoie vrai si 2 ou 3 bonnes réponses
     }
 
     private void examinerSouvenirs(Piece piece) {
