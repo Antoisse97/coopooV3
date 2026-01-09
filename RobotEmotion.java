@@ -82,7 +82,7 @@ public class RobotEmotion extends Personnage {
         if ("Colère".equalsIgnoreCase(reponse)) {
             // Si c'est juste, on débloque et on change l'émotion
             Emotion nouvelle = new Colere();
-            this.ajouterEmotion(nouvelle);
+            this.ajouterEmotion(nouvelle); 
             this.changerEmotion(nouvelle);
             return true; 
         }
