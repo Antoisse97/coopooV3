@@ -1,4 +1,3 @@
-
 /**
  * Décrivez votre classe Monde ici.
  *
@@ -101,4 +100,3 @@ public class Monde {
     
     public Carte getCarte() { return carte; }
 }
-
