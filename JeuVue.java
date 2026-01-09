@@ -81,123 +81,124 @@ public class JeuVue extends JFrame {
     }
 
     private void tenterDeplacement(int dx, int dy) {
-        int ligneActuelle = -1, colonneActuelle = -1;
-        
-        // Recherche de la position actuelle du robot 
-        for (int i = 0; i < taille; i++) {
-            for (int j = 0; j < taille; j++) {
-                if (monde.getCarte().getCellule(i, j) == robot.getPosition()) {
-                    ligneActuelle = i; colonneActuelle = j;
-                    break;
-                }
-            }
-        }
-        
-        // Calcul de la nouvelle position
-        int nx = ligneActuelle + dx; //haut / bas
-        int ny = colonneActuelle + dy; //gauche / droite
-        
-        // Vérification des limites
-        if (nx < 0 || nx >= taille || ny < 0 || ny >= taille) {
-            return;
-        }
-        
-        // Vérification accessibilité
-        if (!monde.getCarte().estAccessible(nx, ny)) {
-            return; 
-        }
-        
-        Cellule cible = monde.getCarte().getCellule(nx, ny);
+    int ligneActuelle = -1, colonneActuelle = -1;
 
-        // Gestion des monstres    
-        if (!cible.getMonstres().isEmpty()) {
-            Monstre m = cible.getMonstres().get(0);
-            int choix = JOptionPane.showConfirmDialog(this, "Un " + m.getNom() + " bloque le passage ! Combattre ?");
-            if (choix == JOptionPane.YES_OPTION) {
-                m.attaquer(robot);
-                if (!robot.estVivant()) {
-                    JOptionPane.showMessageDialog(this, "Le robot a succombé...");
-                    System.exit(0);
-                }
-            }
-            else{
-                return;
+    // 1. Recherche de la position actuelle du robot
+    for (int i = 0; i < taille; i++) {
+        for (int j = 0; j < taille; j++) {
+            if (monde.getCarte().getCellule(i, j) == robot.getPosition()) {
+                ligneActuelle = i;
+                colonneActuelle = j;
+                break;
             }
         }
-        // Déplacement effectif
-        robot.setPosition(cible);
+    }
 
-       // 5. GESTION DES ÉNIGMES (AVANT le déplacement effectif)
-        
-        // Énigme Colère
-        if (nx == 2 && ny == 2 && !(robot.getEmotion() instanceof Colere)) {
-            String rep = JOptionPane.showInputDialog(this, "Énigme : Quelle émotion bouillonne face à l'injustice ?");
-            if (rep != null && robot.verifierReponse(rep)) {
-                JOptionPane.showMessageDialog(this, "La Colère vous envahit !");
-            } else {
-                if (rep != null) JOptionPane.showMessageDialog(this, "Mauvaise réponse... Vous restez sur place.");
-                return; // Bloque le passage
-            }
-        }
-        
-        // Énigme Joie
-        if (nx == 1 && ny == 7 && !(robot.getEmotion() instanceof Joie)) {
-            String rep = JOptionPane.showInputDialog(this, "Énigme : Quelle émotion te donne le sourire ?");
-            if (rep != null && robot.verifierReponse(rep)) {
-                JOptionPane.showMessageDialog(this, "La Joie vous envahit !");
-            } else {
-                if (rep != null) JOptionPane.showMessageDialog(this, "Mauvaise réponse... Vous restez sur place.");
-                return; 
-            }
-        }
-        
-        // Énigme Tristesse
-        if (nx == 5 && ny == 7 && !(robot.getEmotion() instanceof Tristesse)) {
-            String rep = JOptionPane.showInputDialog(this, "Énigme : Quelle émotion te fait pleurer ?");
-            if (rep != null && robot.verifierReponse(rep)) {
-                JOptionPane.showMessageDialog(this, "La Tristesse vous envahit !");
-            } else {
-                if (rep != null) JOptionPane.showMessageDialog(this, "Mauvaise réponse... Vous restez sur place.");
-                return;
-            }
-        }
-        
-        // Énigme Nostalgie
-        if (nx == 8 && ny == 8 && !(robot.getEmotion() instanceof Nostalgie)) {
-            String rep = JOptionPane.showInputDialog(this, "Énigme : Quelle émotion te rappelle des souvenirs ?");
-            if (rep != null && robot.verifierReponse(rep)) {
-                JOptionPane.showMessageDialog(this, "La Nostalgie vous envahit !");
-            } else {
-                if (rep != null) JOptionPane.showMessageDialog(this, "Mauvaise réponse... Vous restez sur place.");
-                return;
-            }
-        }
-        
-        // --- GESTION DES MONSTRES (Duel Final) ---    
-        if (!cible.getMonstres().isEmpty()) {
+    int nx = ligneActuelle + dx;
+    int ny = colonneActuelle + dy;
+
+    // 2. Limites et accessibilité
+    if (nx < 0 || nx >= taille || ny < 0 || ny >= taille) return;
+    if (!monde.getCarte().estAccessible(nx, ny)) return;
+
+    Cellule cible = monde.getCarte().getCellule(nx, ny);
+
+    // 3. Monstres simples (avant déplacement)
+    if (!cible.getMonstres().isEmpty()) {
         Monstre m = cible.getMonstres().get(0);
-        int choix = JOptionPane.showConfirmDialog(this, "Le " + m.getNom() + " bloque le passage ! Duel ?");
+        int choix = JOptionPane.showConfirmDialog(this,
+                "Un " + m.getNom() + " bloque le passage ! Combattre ?");
         if (choix == JOptionPane.YES_OPTION) {
-            if (executerDuelFinal(m)) {
-                cible.getMonstres().clear(); // Victoire : passage libéré définitivement
-            } else {
-                return; // ÉCHEC : Le robot ne bouge pas (return)
+            m.attaquer(robot);
+            if (!robot.estVivant()) {
+                JOptionPane.showMessageDialog(this, "Le robot a succombé...");
+                System.exit(0);
             }
         } else {
-            return; // REFUS : Le robot ne bouge pas (return)
+            return; // on ne se déplace pas
         }
     }
-        
-        // Souvenir
-        if (cible.getPiece() != null && !cible.getPiece().getSouvenirs().isEmpty()) {
-            examinerSouvenirs(cible.getPiece());
+
+    // 4. ÉNIGMES DE PIÈCES — blocage AVANT déplacement
+    // Colère
+    if (nx == 2 && ny == 2 && !(robot.getEmotion() instanceof Colere)) {
+        String rep = JOptionPane.showInputDialog(this,
+                "Énigme : Quelle émotion bouillonne face à l'injustice ?");
+        if (rep == null || !robot.verifierReponse(rep)) {
+            JOptionPane.showMessageDialog(this,
+                    "Mauvaise réponse... Vous restez dans la pièce.");
+            return; // pas de déplacement
+        } else {
+            JOptionPane.showMessageDialog(this, "La Colère vous envahit !");
         }
-        //6 déplacement effectif
-        robot.setPosition(cible);
-        
-        // Rafraichissement de l'affichage
-        mettreAJour();
     }
+
+    // Joie
+    if (nx == 1 && ny == 7 && !(robot.getEmotion() instanceof Joie)) {
+        String rep = JOptionPane.showInputDialog(this,
+                "Énigme : Quelle émotion te donne le sourire ?");
+        if (rep == null || !robot.verifierReponse(rep)) {
+            JOptionPane.showMessageDialog(this,
+                    "Mauvaise réponse... Vous restez dans la pièce.");
+            return;
+        } else {
+            JOptionPane.showMessageDialog(this, "La Joie vous envahit !");
+        }
+    }
+
+    // Tristesse
+    if (nx == 5 && ny == 7 && !(robot.getEmotion() instanceof Tristesse)) {
+        String rep = JOptionPane.showInputDialog(this,
+                "Énigme : Quelle émotion te fait pleurer ?");
+        if (rep == null || !robot.verifierReponse(rep)) {
+            JOptionPane.showMessageDialog(this,
+                    "Mauvaise réponse... Vous restez dans la pièce.");
+            return;
+        } else {
+            JOptionPane.showMessageDialog(this, "La Tristesse vous envahit !");
+        }
+    }
+
+    // Nostalgie
+    if (nx == 8 && ny == 8 && !(robot.getEmotion() instanceof Nostalgie)) {
+        String rep = JOptionPane.showInputDialog(this,
+                "Énigme : Quelle émotion te rappelle des souvenirs ?");
+        if (rep == null || !robot.verifierReponse(rep)) {
+            JOptionPane.showMessageDialog(this,
+                    "Mauvaise réponse... Vous restez dans la pièce.");
+            return;
+        } else {
+            JOptionPane.showMessageDialog(this, "La Nostalgie vous envahit !");
+        }
+    }
+
+    // 5. Duel final (si monstre spécial)
+    if (!cible.getMonstres().isEmpty()) {
+        Monstre m = cible.getMonstres().get(0);
+        int choix = JOptionPane.showConfirmDialog(this,
+                "Le " + m.getNom() + " bloque le passage ! Duel ?");
+        if (choix == JOptionPane.YES_OPTION) {
+            if (executerDuelFinal(m)) {
+                cible.getMonstres().clear(); // Victoire : passage libéré
+            } else {
+                return; // Échec : pas de déplacement
+            }
+        } else {
+            return; // refus : pas de déplacement
+        }
+    }
+
+    // 6. Déplacement effectif (UNE SEULE FOIS, à la fin)
+    robot.setPosition(cible);
+
+    // 7. Souvenirs
+    if (cible.getPiece() != null && !cible.getPiece().getSouvenirs().isEmpty()) {
+        examinerSouvenirs(cible.getPiece());
+    }
+
+    mettreAJour();
+}
+
     
     private void initialiserInterface(JPanel panel) {
         for (int i = 0; i < taille; i++) {

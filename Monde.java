@@ -62,17 +62,28 @@ public class Monde {
     }
 
     private void genererMurs() {
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                // On place des murs sur les cases vides pour créer des couloirs, 
-                // mais on laisse le chemin libre pour les énigmes et les pièces.
-                Cellule c = carte.getCellule(i, j);
-                if (c.getPiece() == null && !c.aEnigme() && (i + j) % 4 == 0) {
-                    c.setType(CellType.MUR);
-                }
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            Cellule c = carte.getCellule(i, j);
+            // Murs "automatiques" pour les couloirs
+            if (c.getPiece() == null && !c.aEnigme() && (i + j) % 4 == 0) {
+                c.setType(CellType.MUR);
             }
         }
     }
+
+    // Mur fixe en (9,7)
+    Cellule cFixe = carte.getCellule(9, 7);
+    if (cFixe != null) {
+        cFixe.setType(CellType.MUR);
+    }
+    // Mur fixe en (8,7)
+    Cellule cFixe2 = carte.getCellule(8, 7);
+    if (cFixe2 != null) {
+        cFixe2.setType(CellType.MUR);
+    }
+}
+
 
     public void installerPiece(Piece piece, int xDebut, int yDebut, int largeur, int hauteur) {
         this.pieces.add(piece);
