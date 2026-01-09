@@ -121,9 +121,11 @@ public class JeuVue extends JFrame {
                     JOptionPane.showMessageDialog(this, "Le robot a succombé...");
                     System.exit(0);
                 }
-
-
-        
+            }
+            else{
+                return;
+            }
+        }
         // Déplacement effectif
         robot.setPosition(cible);
 
