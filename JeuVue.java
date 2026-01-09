@@ -198,7 +198,7 @@ public class JeuVue extends JFrame {
         for (Souvenir s : piece.getSouvenirs()) {
             JOptionPane.showMessageDialog(this, "Examen : " + s.getDescription());
             if (s.estLeSouvenirPerdu()) {
-                JOptionPane.showMessageDialog(this, "VICTOIRE ! Clés trouvées !");
+                JOptionPane.showMessageDialog(this, "VICTOIRE ! Clés trouvées ! Elles sont dans la poche de Mr FOUSSE");
                 System.exit(0);
             }
         }
@@ -213,7 +213,7 @@ public class JeuVue extends JFrame {
         if (cellRobot.getPiece() != null) {
             labelLieu.setText(" Lieu : " + cellRobot.getPiece().getNom());
         } else {
-            labelLieu.setText(" Lieu : Cerveau de Fousse");
+            labelLieu.setText(" Lieu : Cerveau de FOUSSE");
         }
 
         // Mise à jour de la grille
