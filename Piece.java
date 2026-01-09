@@ -1,8 +1,8 @@
 /**
- * Décrivez votre classe Piece ici.
+ * Regroupe un ensemble de cellules pour former un lieu nommé (comme une chambre ou une salle).
  *
- * @author Sofia Kadiri
- * @version 1.0
+ * @author (Groupe 7)
+ * @version (Version finale 09/01)
  */
 import java.util.ArrayList;
 import java.util.List;

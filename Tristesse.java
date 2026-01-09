@@ -1,9 +1,9 @@
 
 /**
- * Décrivez votre classe Tristesse ici.
+ * Classes spécifiques qui modifient les capacités du robot selon son état actuel.
  *
- * @author (votre nom)
- * @version (un numéro de version ou une date)
+ * @author (Groupe 7)
+ * @version (Version finale 09/01)
  */
 public class Tristesse extends Emotion {
     public Tristesse() { super("Tristesse", 1, "Bleu"); }

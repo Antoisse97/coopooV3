@@ -1,9 +1,9 @@
 
 /**
- * Décrivez votre classe Monstre ici.
+ * Un adversaire situé dans une cellule qui peut attaquer le robot.
  *
- * @author (votre nom)
- * @version (un numéro de version ou une date)
+ * @author (Groupe 7)
+ * @version (Version finale 09/01)
  */
 
 public class Monstre extends Personnage {

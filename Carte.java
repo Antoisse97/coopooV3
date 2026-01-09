@@ -1,9 +1,9 @@
 
 /**
- * Décrivez votre classe Carte ici.
+ * Représente la grille logique du jeu composée d'un ensemble de cellules.
  *
- * @author (votre nom)
- * @version (un numéro de version ou une date)
+ * @author (Groupe 7)
+ * @version (Version finale 09/01)
  */
 public class Carte {
     // Tableau à deux dimensions représentant la grille du cerveau de Fousse

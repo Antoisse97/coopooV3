@@ -1,8 +1,8 @@
 /**
- * Décrivez votre classe Joie ici.
+ * Classes spécifiques qui modifient les capacités du robot selon son état actuel.
  *
- * @author (votre nom)
- * @version (un numéro de version ou une date)
+ * @author (Groupe 7)
+ * @version (Version finale 09/01)
  */
 public class Joie extends Emotion {
     public Joie() { super("Joie", 3, "Jaune"); }

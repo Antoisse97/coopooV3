@@ -1,9 +1,9 @@
 
 /**
- * Décrivez votre classe AmelioType ici.
+ * Énumération listant les différentes catégories d'améliorations disponibles.
  *
- * @author (votre nom)
- * @version (un numéro de version ou une date)
+ * @author (Groupe 7)
+ * @version (Version finale 09/01)
  */
 public enum AmelioType {
     VITESSE,  // Pour augmenter la rapidité de déplacement [cite: 111]

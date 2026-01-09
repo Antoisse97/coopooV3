@@ -1,6 +1,14 @@
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+
+/**
+ * Le personnage principal qui se déplace, interagit avec l'environnement et change ses couleurs selon ses émotions.
+ *
+ * @author (Groupe 7)
+ * @version (Version finale 09/01)
+ */
 
 public class RobotEmotion extends Personnage {
     // Attributs spécifiques au robot

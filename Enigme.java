@@ -1,9 +1,9 @@
 
 /**
- * Décrivez votre classe Enigme ici.
+ * Un défi intellectuel lié à une émotion que le robot doit résoudre pour progresser.
  *
- * @author (votre nom)
- * @version (un numéro de version ou une date)
+ * @author (Groupe 7)
+ * @version (Version finale 09/01)
  */
 public class Enigme {
     private String question;
