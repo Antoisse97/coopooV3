@@ -14,7 +14,7 @@ public class Monstre extends Personnage {
         this.force = force;
     }
 
-    // Méthode d'attaque contre un robot 
+    // Méthode d'attaque contre un robot annexe
     public void attaquer(Personnage cible) {
         System.out.println(getNom() + " attaque " + cible.getNom() + " !");
         cible.perdrePV(this.force); 
