@@ -28,27 +28,27 @@ public class Carte {
     }
 
     // Vérifie si une coordonnée est dans les limites et marchable [cite: 49, 126]
-    public boolean estAccessible(int x, int y) {
+    public boolean estAccessible(int ligne, int colonne) {
         // 1. Vérification des limites de la grille
-        if (x < 0 || x >= largeur || y < 0 || y >= hauteur) {
+        if (ligne < 0 || ligne >= hauteur || colonne < 0 || colonne >= largeur) {
             return false;
         }
         // 2. Vérification si la cellule n'est pas un mur [cite: 158]
-        return grille[x][y].estLibre();
+        return grille[ligne][colonne].estLibre();
     }
 
     // Récupère une cellule spécifique [cite: 49, 126]
-    public Cellule getCellule(int x, int y) {
-        if (x >= 0 && x < largeur && y >= 0 && y < hauteur) {
-            return grille[x][y];
+    public Cellule getCellule(int ligne, int colonne) {
+        if (ligne >= 0 && ligne < hauteur && colonne >= 0 && colonne < largeur) {
+            return grille[ligne][colonne];
         }
         return null;
     }
 
     // Permet de modifier le type d'une cellule (ex: placer un MUR) 
-    public void setCellule(int x, int y, Cellule c) {
-        if (x >= 0 && x < largeur && y >= 0 && y < hauteur) {
-            this.grille[x][y] = c;
+    public void setCellule(int ligne, int colonne, Cellule c) {
+        if (ligne >= 0 && ligne < hauteur && colonne >= 0 && colonne < largeur) {
+            this.grille[ligne][colonne] = c;
         }
     }
 }

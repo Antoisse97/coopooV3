@@ -74,74 +74,88 @@ public class JeuVue extends JFrame {
         im.put(KeyStroke.getKeyStroke("LEFT"), "gauche");
         im.put(KeyStroke.getKeyStroke("RIGHT"), "droite");
     
-        am.put("haut", new AbstractAction() { @Override public void actionPerformed(ActionEvent e) { tenterDeplacement(0, -1); } });
-        am.put("bas", new AbstractAction() { @Override public void actionPerformed(ActionEvent e) { tenterDeplacement(0, 1); } });
-        am.put("gauche", new AbstractAction() { @Override public void actionPerformed(ActionEvent e) { tenterDeplacement(-1, 0); } });
-        am.put("droite", new AbstractAction() { @Override public void actionPerformed(ActionEvent e) { tenterDeplacement(1, 0); } });
+        am.put("haut", new AbstractAction() { @Override public void actionPerformed(ActionEvent e) { tenterDeplacement(-1, 0); } });
+        am.put("bas", new AbstractAction() { @Override public void actionPerformed(ActionEvent e) { tenterDeplacement(1, 0); } });
+        am.put("gauche", new AbstractAction() { @Override public void actionPerformed(ActionEvent e) { tenterDeplacement(0, -1); } });
+        am.put("droite", new AbstractAction() { @Override public void actionPerformed(ActionEvent e) { tenterDeplacement(0, 1); } });
     }
 
     private void tenterDeplacement(int dx, int dy) {
-        int xActuel = -1, yActuel = -1;
+        int ligneActuelle = -1, colonneActuelle = -1;
+        
+        // Recherche de la position actuelle du robot 
         for (int i = 0; i < taille; i++) {
             for (int j = 0; j < taille; j++) {
                 if (monde.getCarte().getCellule(i, j) == robot.getPosition()) {
-                    xActuel = i; yActuel = j;
+                    ligneActuelle = i; colonneActuelle = j;
                     break;
                 }
             }
         }
+        
+        // Calcul de la nouvelle position
+        int nx = ligneActuelle + dx; //haut / bas
+        int ny = colonneActuelle + dy; //gauche / droite
+        
+        // Vérification des limites
+        if (nx < 0 || nx >= taille || ny < 0 || ny >= taille) {
+            return;
+        }
+        
+        // Vérification accessibilité
+        if (!monde.getCarte().estAccessible(nx, ny)) {
+            return; 
+        }
+        
+        Cellule cible = monde.getCarte().getCellule(nx, ny);
 
-        int nx = xActuel + dx;
-        int ny = yActuel + dy;
-
-        if (nx >= 0 && nx < taille && ny >= 0 && ny < taille) {
-            Cellule cible = monde.getCarte().getCellule(nx, ny);
-
-            if (monde.getCarte().estAccessible(nx, ny)) {
-                
-                if (!cible.getMonstres().isEmpty()) {
-                    Monstre m = cible.getMonstres().get(0);
-                    int choix = JOptionPane.showConfirmDialog(this, "Un " + m.getNom() + " bloque le passage ! Combattre ?");
-                    if (choix == JOptionPane.YES_OPTION) {
-                        m.attaquer(robot);
-                        if (!robot.estVivant()) {
-                            JOptionPane.showMessageDialog(this, "Le robot a succombé...");
-                            System.exit(0);
-                        }
-                    } else { return; }
-                }
-
-                robot.setPosition(cible);
-
-                // Énigme Colère en (2,2)
-                if (nx == 2 && ny == 2 && !(robot.getEmotion() instanceof Colere)) {
-                    String rep = JOptionPane.showInputDialog(this, "Énigme : Quelle émotion bouillonne face à l'injustice ?");
-                    if (rep != null && robot.verifierReponse(rep)) {
-                        JOptionPane.showMessageDialog(this, "La Colère vous envahit !");
-                    }
+        // Gestion des monstres    
+        if (!cible.getMonstres().isEmpty()) {
+            Monstre m = cible.getMonstres().get(0);
+            int choix = JOptionPane.showConfirmDialog(this, "Un " + m.getNom() + " bloque le passage ! Combattre ?");
+            
+            if (choix == JOptionPane.YES_OPTION) {
+                m.attaquer(robot);
                     
-                    
-                }
-                if (nx == 7 && ny == 1 && !(robot.getEmotion() instanceof Joie)) {
-                    String rep = JOptionPane.showInputDialog(this, "Énigme : Quelle émotion te donne le sourire ?");
-                    if (rep != null && robot.verifierReponse(rep)) {
-                        JOptionPane.showMessageDialog(this, "La Joie vous envahit !");
-                    }
-                }
-                if (nx == 7 && ny == 5 && !(robot.getEmotion() instanceof Tristesse)) {
-                    String rep = JOptionPane.showInputDialog(this, "Énigme : Quelle émotion te fait pleurer ?");
-                    if (rep != null && robot.verifierReponse(rep)) {
-                        JOptionPane.showMessageDialog(this, "La Tristesse vous envahit !");
-                    }
-                }
-                
-                if (cible.getPiece() != null && !cible.getPiece().getSouvenirs().isEmpty()) {
-                    examinerSouvenirs(cible.getPiece());
+                if (!robot.estVivant()) {
+                    JOptionPane.showMessageDialog(this, "Le robot a succombé...");
+                    System.exit(0);
                 }
 
-                mettreAJour();
+            } 
+        
+        }
+        
+        // Déplacement effectif
+        robot.setPosition(cible);
+
+        // Énigme Colère en (2,2)
+        if (nx == 2 && ny == 2 && !(robot.getEmotion() instanceof Colere)) {
+            String rep = JOptionPane.showInputDialog(this, "Énigme : Quelle émotion bouillonne face à l'injustice ?");
+            if (rep != null && robot.verifierReponse(rep)) {
+                JOptionPane.showMessageDialog(this, "La Colère vous envahit !");
             }
         }
+        if (nx == 7 && ny == 1 && !(robot.getEmotion() instanceof Joie)) {
+            String rep = JOptionPane.showInputDialog(this, "Énigme : Quelle émotion te donne le sourire ?");
+            if (rep != null && robot.verifierReponse(rep)) {
+                        JOptionPane.showMessageDialog(this, "La Joie vous envahit !");
+            }
+        }
+        if (nx == 7 && ny == 5 && !(robot.getEmotion() instanceof Tristesse)) {
+            String rep = JOptionPane.showInputDialog(this, "Énigme : Quelle émotion te fait pleurer ?");
+            if (rep != null && robot.verifierReponse(rep)) {
+                        JOptionPane.showMessageDialog(this, "La Tristesse vous envahit !");
+            }
+        }
+        
+        // Souvenir
+        if (cible.getPiece() != null && !cible.getPiece().getSouvenirs().isEmpty()) {
+            examinerSouvenirs(cible.getPiece());
+        }
+        
+        // Rafraichissement de l'affichage
+        mettreAJour();
     }
     
     private void initialiserInterface(JPanel panel) {
