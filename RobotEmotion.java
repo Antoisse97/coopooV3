@@ -100,6 +100,13 @@ public class RobotEmotion extends Personnage {
             this.changerEmotion(nouvelle);
             return true; 
         }
+        if ("Nostalgie".equalsIgnoreCase(reponse)) {
+            // Si c'est juste, on débloque et on change l'émotion
+            Emotion nouvelle = new Nostalgie();
+            this.ajouterEmotion(nouvelle);
+            this.changerEmotion(nouvelle);
+            return true; 
+        }
         
         // Si c'est faux, on retourne false pour que JeuVue affiche un message d'erreur
         return false;
