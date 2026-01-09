@@ -113,10 +113,8 @@ public class JeuVue extends JFrame {
         if (!cible.getMonstres().isEmpty()) {
             Monstre m = cible.getMonstres().get(0);
             int choix = JOptionPane.showConfirmDialog(this, "Un " + m.getNom() + " bloque le passage ! Combattre ?");
-            
             if (choix == JOptionPane.YES_OPTION) {
                 m.attaquer(robot);
-                    
                 if (!robot.estVivant()) {
                     JOptionPane.showMessageDialog(this, "Le robot a succombé...");
                     System.exit(0);
@@ -177,28 +175,25 @@ public class JeuVue extends JFrame {
         
         // --- GESTION DES MONSTRES (Duel Final) ---    
         if (!cible.getMonstres().isEmpty()) {
-            Monstre m = cible.getMonstres().get(0);
-            int choix = JOptionPane.showConfirmDialog(this, "Le " + m.getNom() + " bloque le passage ! Voulez-vous engager le duel ?");
-            
-            if (choix == JOptionPane.YES_OPTION) {
-                // Lancement du combat interne à JeuVue
-                boolean victoire = executerDuelFinal(m);
-                
-                if (victoire) {
-                    JOptionPane.showMessageDialog(this, "Le monstre s'évapore dans les tréfonds de l'inconscient. Le passage est libre !");
-                    cible.getMonstres().clear(); // Supprime le monstre de la carte
-                } else {
-                    return; // Échec du combat, le robot ne bouge pas
-                }
+        Monstre m = cible.getMonstres().get(0);
+        int choix = JOptionPane.showConfirmDialog(this, "Le " + m.getNom() + " bloque le passage ! Duel ?");
+        if (choix == JOptionPane.YES_OPTION) {
+            if (executerDuelFinal(m)) {
+                cible.getMonstres().clear(); // Victoire : passage libéré définitivement
             } else {
-                return; // Refus du combat, on ne bouge pas
+                return; // ÉCHEC : Le robot ne bouge pas (return)
             }
+        } else {
+            return; // REFUS : Le robot ne bouge pas (return)
         }
+    }
         
         // Souvenir
         if (cible.getPiece() != null && !cible.getPiece().getSouvenirs().isEmpty()) {
             examinerSouvenirs(cible.getPiece());
         }
+        //6 déplacement effectif
+        robot.setPosition(cible);
         
         // Rafraichissement de l'affichage
         mettreAJour();
