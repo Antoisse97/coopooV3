@@ -122,9 +122,7 @@ public class JeuVue extends JFrame {
                     System.exit(0);
                 }
 
-            } 
-        
-        }
+
         
         // Déplacement effectif
         robot.setPosition(cible);
@@ -136,6 +134,7 @@ public class JeuVue extends JFrame {
                 JOptionPane.showMessageDialog(this, "La Colère vous envahit !");
             }
         }
+
         if (nx == 7 && ny == 1 && !(robot.getEmotion() instanceof Joie)) {
             String rep = JOptionPane.showInputDialog(this, "Énigme : Quelle émotion te donne le sourire ?");
             if (rep != null && robot.verifierReponse(rep)) {
