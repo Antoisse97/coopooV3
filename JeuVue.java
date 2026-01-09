@@ -129,24 +129,49 @@ public class JeuVue extends JFrame {
         // Déplacement effectif
         robot.setPosition(cible);
 
-        // Énigme Colère en (2,2)
+       // 5. GESTION DES ÉNIGMES (AVANT le déplacement effectif)
+        
+        // Énigme Colère
         if (nx == 2 && ny == 2 && !(robot.getEmotion() instanceof Colere)) {
             String rep = JOptionPane.showInputDialog(this, "Énigme : Quelle émotion bouillonne face à l'injustice ?");
             if (rep != null && robot.verifierReponse(rep)) {
                 JOptionPane.showMessageDialog(this, "La Colère vous envahit !");
+            } else {
+                if (rep != null) JOptionPane.showMessageDialog(this, "Mauvaise réponse... Vous restez sur place.");
+                return; // Bloque le passage
             }
         }
-
-        if (nx == 7 && ny == 1 && !(robot.getEmotion() instanceof Joie)) {
+        
+        // Énigme Joie
+        if (nx == 1 && ny == 7 && !(robot.getEmotion() instanceof Joie)) {
             String rep = JOptionPane.showInputDialog(this, "Énigme : Quelle émotion te donne le sourire ?");
             if (rep != null && robot.verifierReponse(rep)) {
-                        JOptionPane.showMessageDialog(this, "La Joie vous envahit !");
+                JOptionPane.showMessageDialog(this, "La Joie vous envahit !");
+            } else {
+                if (rep != null) JOptionPane.showMessageDialog(this, "Mauvaise réponse... Vous restez sur place.");
+                return; 
             }
         }
-        if (nx == 7 && ny == 5 && !(robot.getEmotion() instanceof Tristesse)) {
+        
+        // Énigme Tristesse
+        if (nx == 5 && ny == 7 && !(robot.getEmotion() instanceof Tristesse)) {
             String rep = JOptionPane.showInputDialog(this, "Énigme : Quelle émotion te fait pleurer ?");
             if (rep != null && robot.verifierReponse(rep)) {
-                        JOptionPane.showMessageDialog(this, "La Tristesse vous envahit !");
+                JOptionPane.showMessageDialog(this, "La Tristesse vous envahit !");
+            } else {
+                if (rep != null) JOptionPane.showMessageDialog(this, "Mauvaise réponse... Vous restez sur place.");
+                return;
+            }
+        }
+        
+        // Énigme Nostalgie
+        if (nx == 8 && ny == 8 && !(robot.getEmotion() instanceof Nostalgie)) {
+            String rep = JOptionPane.showInputDialog(this, "Énigme : Quelle émotion te rappelle des souvenirs ?");
+            if (rep != null && robot.verifierReponse(rep)) {
+                JOptionPane.showMessageDialog(this, "La Nostalgie vous envahit !");
+            } else {
+                if (rep != null) JOptionPane.showMessageDialog(this, "Mauvaise réponse... Vous restez sur place.");
+                return;
             }
         }
         
@@ -208,6 +233,10 @@ public class JeuVue extends JFrame {
 
                 if (cellRobot == cell) {
                     btn.setText("🤖");
+                                        // --- AJOUTS POUR MAC ---
+                    btn.setOpaque(true); 
+                    btn.setBorderPainted(false);
+                    
                     if (robot.getEmotion() instanceof Anxiete) btn.setBackground(Color.ORANGE);
                     else if (robot.getEmotion() instanceof Colere) btn.setBackground(Color.RED);
                     else if (robot.getEmotion() instanceof Nostalgie) btn.setBackground(new Color(139, 69, 19));
