@@ -122,13 +122,10 @@ public class JeuVue extends JFrame {
                     System.exit(0);
                 }
 
-
             }
             else{
                 return;
             }
-
-
         }
         // Déplacement effectif
         robot.setPosition(cible);
