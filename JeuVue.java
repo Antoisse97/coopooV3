@@ -121,6 +121,7 @@ public class JeuVue extends JFrame {
                     JOptionPane.showMessageDialog(this, "Le robot a succombé...");
                     System.exit(0);
                 }
+
             }
             else{
                 return;
@@ -183,6 +184,7 @@ public class JeuVue extends JFrame {
         // Rafraichissement de l'affichage
         mettreAJour();
     }
+
     
     private void initialiserInterface(JPanel panel) {
         for (int i = 0; i < taille; i++) {
