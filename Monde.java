@@ -1,11 +1,12 @@
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *  Gère l'initialisation globale et contient la structure principale (Carte, Pièces, Robots).
  *
  * @author (Groupe 7)
  * @version (Version finale 09/01)
  */
-import java.util.ArrayList;
-import java.util.List;
 
 public class Monde {
     private List<Piece> pieces;
@@ -82,7 +83,7 @@ public class Monde {
     if (cFixe2 != null) {
         cFixe2.setType(CellType.MUR);
     }
-}
+    }
 
 
     public void installerPiece(Piece piece, int xDebut, int yDebut, int largeur, int hauteur) {

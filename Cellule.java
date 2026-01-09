@@ -1,12 +1,13 @@
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Définit une case spécifique de la carte pouvant contenir un mur, une porte, un monstre ou une énigme.
  *
  * @author (Groupe 7)
  * @version (Version finale 09/01)
  */
-import java.util.ArrayList;
-import java.util.List;
 
 public class Cellule {
     private CellType type;
@@ -14,6 +15,7 @@ public class Cellule {
     private Piece piece;
     private Enigme enigme;
     private List<Monstre> monstres = new ArrayList<>();
+    
     public Cellule(CellType type) {
         this.type = type;
     }

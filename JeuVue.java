@@ -1,12 +1,13 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+
 /**
  * Gère l'affichage graphique et l'interface utilisateur pour le joueur.
  *
  * @author (Groupe 7)
  * @version (Version finale 09/01)
  */
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
 
 public class JeuVue extends JFrame {
     private Monde monde;
@@ -203,7 +204,7 @@ public class JeuVue extends JFrame {
     }
 
     mettreAJour();
-}
+    }
 
     
     private void initialiserInterface(JPanel panel) {

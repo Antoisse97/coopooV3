@@ -1,11 +1,12 @@
 
+import javax.swing.SwingUtilities;
+
 /**
  * Classes de lancement et de vérification du bon fonctionnement.
  *
  * @author (Groupe 7)
  * @version (Version finale 09/01)
  */
-import javax.swing.SwingUtilities;
 
 public class App {
     public static void main(String[] args) {
