@@ -1,9 +1,9 @@
 
 /**
- * Décrivez votre classe Nostalgie ici.
+ * Classes spécifiques qui modifient les capacités du robot selon son état actuel.
  *
- * @author (votre nom)
- * @version (un numéro de version ou une date)
+ * @author (Groupe 7)
+ * @version (Version finale 09/01)
  */
 public class Nostalgie extends Emotion {
     public Nostalgie() {

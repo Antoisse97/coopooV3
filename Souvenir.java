@@ -1,9 +1,9 @@
 
 /**
- * Décrivez votre classe Souvenir ici.
+ * Objet de collection ou clé de victoire stocké dans les pièces.
  *
- * @author (votre nom)
- * @version (un numéro de version ou une date)
+ * @author (Groupe 7)
+ * @version (Version finale 09/01)
  */
 
 public class Souvenir {

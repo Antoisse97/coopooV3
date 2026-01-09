@@ -1,9 +1,9 @@
 
 /**
- * Décrivez votre classe CellType ici.
+ * Énumération définissant les types de sols possibles (MUR, PORTE, etc.).
  *
- * @author (votre nom)
- * @version (un numéro de version ou une date)
+ * @author (Groupe 7)
+ * @version (Version finale 09/01)
  */
 public enum CellType {
     VIDE,  // Case où l'on peut marcher

@@ -1,8 +1,8 @@
 /**
- * Décrivez votre classe Monde ici.
+ *  Gère l'initialisation globale et contient la structure principale (Carte, Pièces, Robots).
  *
- * @author (caleb)
- * @version (un numéro de version ou une date)
+ * @author (Groupe 7)
+ * @version (Version finale 09/01)
  */
 import java.util.ArrayList;
 import java.util.List;

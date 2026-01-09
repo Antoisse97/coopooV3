@@ -1,7 +1,10 @@
 /**
- * Classe de base abstraite pour tous les personnages du jeu.
- * Elle regroupe le nom et la gestion de la santé.
+ * Classe parente définissant les attributs de base (nom, points de vie) pour les entités vivantes.
+ * 
+ * @author (Groupe 7)
+ * @version (Version finale 09/01)
  */
+
 public abstract class Personnage {
     // Attributs privés pour respecter l'encapsulation 
     private String nom;

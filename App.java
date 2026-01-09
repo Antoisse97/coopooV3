@@ -1,9 +1,9 @@
 
 /**
- * Décrivez votre classe App ici.
+ * Classes de lancement et de vérification du bon fonctionnement.
  *
- * @author (votre nom)
- * @version (un numéro de version ou une date)
+ * @author (Groupe 7)
+ * @version (Version finale 09/01)
  */
 import javax.swing.SwingUtilities;
 

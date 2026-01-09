@@ -1,9 +1,9 @@
 
 /**
- * Décrivez votre classe Amelioration ici.
+ * Objet ou capacité permettant d'augmenter les statistiques (énergie, vie) du robot.
  *
- * @author (votre nom)
- * @version (un numéro de version ou une date)
+ * @author (Groupe 7)
+ * @version (Version finale 09/01)
  */
 public class Amelioration {
     private AmelioType type; // VITESSE, ENERGIE ou EMOTION 

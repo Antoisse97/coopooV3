@@ -1,9 +1,9 @@
 
 /**
- * Décrivez votre classe Emotion ici.
+ * Classe abstraite définissant le comportement général d'un état émotionnel.
  *
- * @author (votre nom)
- * @version (un numéro de version ou une date)
+ * @author (Groupe 7)
+ * @version (Version finale 09/01)
  */
 public abstract class Emotion {
     protected String nom; 
